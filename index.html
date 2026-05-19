@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tu Selva Urbana — Documentación del Proyecto</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-deep:   #1a2e1e;
+    --green-mid:    #2d5a35;
+    --green-bright: #4a9455;
+    --green-light:  #7ec887;
+    --green-pale:   #c8eacc;
+    --cream:        #f5f0e8;
+    --cream-dark:   #e8e0d0;
+    --gold:         #c8a84b;
+    --gold-light:   #e8c96a;
+    --ink:          #1a1a1a;
+    --muted:        #5a6a5c;
+    --white:        #ffffff;
+    --sidebar-w:    260px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--green-deep);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+    border-right: 3px solid var(--gold);
+  }
+
+  .sidebar-logo {
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid rgba(200,168,75,.3);
+  }
+  .sidebar-logo .leaf { font-size: 2rem; display: block; margin-bottom: 8px; }
+  .sidebar-logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+  .sidebar-logo span {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .sidebar-section {
+    padding: 20px 16px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .sidebar-nav { list-style: none; padding: 0 8px; }
+  .sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    color: var(--green-pale);
+    font-weight: 400;
+    transition: background .2s, color .2s;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav li a:hover,
+  .sidebar-nav li a.active {
+    background: rgba(74,148,85,.25);
+    color: var(--white);
+  }
+  .sidebar-nav li a .icon { font-size: 1rem; flex-shrink: 0; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(200,168,75,.2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--green-deep);
+    background-image:
+      radial-gradient(ellipse at 10% 50%, rgba(74,148,85,.35) 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 20%, rgba(200,168,75,.15) 0%, transparent 45%);
+    padding: 80px 64px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 400px; height: 400px;
+    border: 80px solid rgba(74,148,85,.08);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: 60px; bottom: -100px;
+    width: 260px; height: 260px;
+    border: 50px solid rgba(200,168,75,.07);
+    border-radius: 50%;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(200,168,75,.15);
+    border: 1px solid rgba(200,168,75,.4);
+    color: var(--gold-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.15;
+    max-width: 680px;
+    margin-bottom: 16px;
+  }
+  .hero h2 em {
+    font-style: italic;
+    color: var(--green-light);
+  }
+  .hero p {
+    font-size: 0.95rem;
+    color: var(--green-pale);
+    max-width: 560px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .hero-meta {
+    margin-top: 32px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .hero-meta-item .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .hero-meta-item .value {
+    font-size: 0.82rem;
+    color: var(--green-pale);
+    font-weight: 600;
+  }
+
+  /* ── CONTENT AREA ── */
+  .content {
+    padding: 56px 64px;
+    max-width: 960px;
+  }
+
+  /* ── PART HEADERS ── */
+  .part-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+    margin-top: 16px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--cream-dark);
+  }
+  .part-number {
+    background: var(--green-deep);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .part-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--green-deep);
+    line-height: 1.2;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section {
+    margin-bottom: 48px;
+    scroll-margin-top: 24px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--green-mid);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--green-pale), transparent);
+  }
+  .section-num {
+    background: var(--green-pale);
+    color: var(--green-mid);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* ── PROSE ── */
+  .prose p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--ink);
+    margin-bottom: 12px;
+    font-weight: 300;
+  }
+  .prose strong { font-weight: 600; color: var(--green-deep); }
+
+  /* ── INFO CARD ── */
+  .info-card {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-left: 4px solid var(--green-bright);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .info-card .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .info-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--ink);
+    font-weight: 300;
+  }
+  .info-card p strong { color: var(--green-deep); font-weight: 600; }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .gloss-item {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color .2s;
+  }
+  .gloss-item:hover { border-color: var(--green-light); }
+  .gloss-term {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--green-mid);
+    margin-bottom: 6px;
+  }
+  .gloss-def {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── USER STORIES ── */
+  .story-card {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(to right, var(--green-bright), var(--gold));
+  }
+  .story-role {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green-deep);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .story-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .dod-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .dod-items { list-style: none; }
+  .dod-items li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .dod-items li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green-bright);
+    font-weight: 700;
+  }
+
+  /* ── RESTRICTION PILLS ── */
+  .restrictions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .restriction {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .restriction-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .restriction-text { font-size: 0.85rem; color: var(--ink); line-height: 1.6; font-weight: 300; }
+  .restriction-text strong { color: var(--green-deep); font-weight: 600; }
+
+  /* ── ARCHITECTURE LAYERS ── */
+  .arch-diagram {
+    background: var(--green-deep);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .arch-diagram::before {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    border: 40px solid rgba(74,148,85,.1);
+    border-radius: 50%;
+  }
+  .arch-layer {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(126,200,135,.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: background .2s;
+  }
+  .arch-layer:hover { background: rgba(255,255,255,.09); }
+  .arch-layer-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .arch-layer-body { flex: 1; }
+  .arch-layer-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: .1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .arch-layer-desc { font-size: 0.82rem; color: var(--green-pale); line-height: 1.5; font-weight: 300; }
+  .arch-arrow {
+    text-align: center;
+    color: var(--green-light);
+    font-size: 1rem;
+    margin: 2px 0;
+    opacity: .6;
+  }
+
+  /* ── NFR GRID ── */
+  .nfr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .nfr-card {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .nfr-icon { font-size: 1.5rem; margin-bottom: 10px; }
+  .nfr-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 8px;
+  }
+  .nfr-items { list-style: none; }
+  .nfr-items li {
+    font-size: 0.8rem;
+    color: var(--muted);
+    padding: 3px 0 3px 14px;
+    position: relative;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .nfr-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--green-light);
+  }
+
+  /* ── TECH TABLE ── */
+  .tech-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.83rem;
+  }
+  .tech-table thead {
+    background: var(--green-deep);
+  }
+  .tech-table thead th {
+    padding: 14px 18px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .tech-table tbody tr {
+    border-bottom: 1px solid var(--cream-dark);
+    transition: background .15s;
+  }
+  .tech-table tbody tr:last-child { border-bottom: none; }
+  .tech-table tbody tr:hover { background: rgba(74,148,85,.05); }
+  .tech-table td {
+    padding: 14px 18px;
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--ink);
+    font-weight: 300;
+  }
+  .tech-table td:first-child { font-weight: 600; color: var(--green-deep); }
+  .tech-table td:nth-child(2) {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--green-mid);
+  }
+  .version-badge {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green-mid);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── METHODOLOGY ── */
+  .scrum-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .scrum-card {
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .scrum-card .s-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .scrum-card .s-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 6px;
+  }
+  .scrum-card .s-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; font-weight: 300; }
+
+  /* ── DELIVERY ── */
+  .delivery-steps { display: flex; flex-direction: column; gap: 12px; }
+  .delivery-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .step-num {
+    background: var(--green-deep);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-body .step-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 4px;
+  }
+  .step-body .step-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+  .step-body code {
+    background: var(--green-pale);
+    color: var(--green-deep);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* ── DIVIDER ── */
+  .part-divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--green-bright), transparent);
+    margin: 56px 0;
+    border-radius: 2px;
+  }
+
+  /* ── HIGHLIGHT QUOTE ── */
+  .highlight {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .highlight p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--green-pale);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .highlight p strong { color: var(--gold-light); font-style: normal; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    :root { --sidebar-w: 0px; }
+    #sidebar { display: none; }
+    #main { margin-left: 0; }
+    .content { padding: 32px 24px; }
+    .hero { padding: 48px 24px 40px; }
+    .glossary-grid, .nfr-grid, .scrum-grid { grid-template-columns: 1fr; }
+    .hero-meta { gap: 20px; }
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp .5s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section:nth-child(1) .fade-in { animation-delay: .05s; }
+  .section:nth-child(2) .fade-in { animation-delay: .1s; }
+  .section:nth-child(3) .fade-in { animation-delay: .15s; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════ SIDEBAR ══════════════════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <span class="leaf">🌿</span>
+    <h1>Tu Selva Urbana</h1>
+    <span>Documentación del Proyecto</span>
+  </div>
+
+  <div class="sidebar-section">Parte I — PID</div>
+  <ul class="sidebar-nav">
+    <li><a href="#vision"><span class="icon">🎯</span> Visión del Negocio</a></li>
+    <li><a href="#glosario"><span class="icon">📖</span> Glosario</a></li>
+    <li><a href="#historias"><span class="icon">📋</span> Historias de Usuario</a></li>
+    <li><a href="#objetivos"><span class="icon">🔒</span> Objetivos y Restricciones</a></li>
+  </ul>
+
+  <div class="sidebar-section">Parte II — SAD</div>
+  <ul class="sidebar-nav">
+    <li><a href="#introduccion"><span class="icon">📐</span> Introducción</a></li>
+    <li><a href="#nfr"><span class="icon">⚙️</span> Requerimientos No Func.</a></li>
+    <li><a href="#arquitectura"><span class="icon">🏗️</span> Vista Lógica</a></li>
+    <li><a href="#stack"><span class="icon">💻</span> Stack Tecnológico</a></li>
+  </ul>
+
+  <div class="sidebar-section">Parte III — IV</div>
+  <ul class="sidebar-nav">
+    <li><a href="#metodologia"><span class="icon">🔄</span> Metodología</a></li>
+    <li><a href="#entrega"><span class="icon">🚀</span> Formato de Entrega</a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    Arquitectura Cliente-Servidor<br>
+    API RESTful · Scrum · PaaS
+  </div>
+</nav>
+
+<!-- ══════════════════════════════ MAIN ══════════════════════════════ -->
+<main id="main">
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="hero-badge">📄 PID + SAD + Metodología</div>
+    <h2>Plataforma web de <em>E-Commerce y Comunidad Botánica</em> mediante Arquitectura Cliente-Servidor y API RESTful</h2>
+    <p>Documentación técnica completa del proyecto <strong style="color:var(--gold-light)">Tu Selva Urbana</strong> — un ecosistema digital que unifica comercio electrónico, inteligencia artificial y comunidad para entusiastas de la botánica.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">Arquitectura</span>
+        <span class="value">Cliente-Servidor · MVC</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Metodología</span>
+        <span class="value">Scrum — Ágil</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Infraestructura</span>
+        <span class="value">Railway PaaS · CI/CD</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">IA integrada</span>
+        <span class="value">Gemini 2.5 Flash</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ════════════════════ PARTE I — PID ════════════════════ -->
+    <div class="part-header" id="pid">
+      <span class="part-number">Parte I</span>
+      <h2>Documento de Inicio de Proyecto (PID)</h2>
+    </div>
+
+    <!-- 1. Visión y Contexto -->
+    <section class="section" id="vision">
+      <h3 class="section-title"><span class="section-num">1.1</span> Visión y Contexto del Negocio</h3>
+
+      <div class="info-card fade-in">
+        <div class="card-label">🔍 Problema a Resolver</div>
+        <p>Existe una desconexión en el mercado tradicional de venta de plantas: el cliente adquiere una planta pero carece de la <strong>orientación y comunidad</strong> necesarias para mantenerla viva, lo que resulta en una experiencia frustrantemente corta y negativa.</p>
+      </div>
+
+      <div class="info-card fade-in" style="border-left-color: var(--gold);">
+        <div class="card-label" style="color: var(--gold);">💡 Propósito de la Plataforma</div>
+        <p><strong>"Tu Selva Urbana"</strong> resuelve esto unificando el E-commerce con un ecosistema social e Inteligencia Artificial. No solo vende plantas, sino que acompaña al usuario con un <strong>Quiz de Diagnóstico</strong> para compras inteligentes, un <strong>Asistente Botánico con IA</strong> para cuidados, y un <strong>Feed Social</strong> para fomentar el sentido de pertenencia.</p>
+      </div>
+
+      <div class="info-card fade-in">
+        <div class="card-label">👥 Usuario Final</div>
+        <p>Entusiastas de la botánica en dos segmentos: <strong>principiantes ("plant killers")</strong> que necesitan guía de IA y recomendaciones personalizadas, y <strong>coleccionistas avanzados</strong> que buscan un catálogo especializado y una comunidad activa para compartir logros.</p>
+      </div>
+
+      <div class="info-card fade-in" style="border-left-color: var(--green-light);">
+        <div class="card-label" style="color: var(--green-mid);">📈 Importancia Estratégica</div>
+        <p>Aumenta la <strong>retención y fidelización del cliente</strong> al transformar una compra transaccional en una experiencia continua, reduciendo la tasa de abandono post-compra y generando comunidad activa alrededor de la marca.</p>
+      </div>
+    </section>
+
+    <!-- 2. Glosario -->
+    <section class="section" id="glosario">
+      <h3 class="section-title"><span class="section-num">1.2</span> Glosario de Términos</h3>
+      <div class="glossary-grid fade-in">
+
+        <div class="gloss-item">
+          <div class="gloss-term">OTP — One-Time Password</div>
+          <div class="gloss-def">Código de verificación dinámico de <strong>6 dígitos</strong> enviado por Email y SMS para validar la identidad del usuario antes de completar su registro final en la plataforma.</div>
+        </div>
+
+        <div class="gloss-item">
+          <div class="gloss-term">PendingRegistration</div>
+          <div class="gloss-def">Estado transitorio en base de datos donde se almacena temporalmente a un usuario hasta que valide su identidad mediante el código OTP, actuando como buffer de seguridad.</div>
+        </div>
+
+        <div class="gloss-item">
+          <div class="gloss-term">Adoptar</div>
+          <div class="gloss-def">Terminología de negocio propia de la plataforma para referirse a la <strong>compra o adquisición de una planta</strong>. Refuerza el vínculo emocional entre el cliente y su nueva planta.</div>
+        </div>
+
+        <div class="gloss-item">
+          <div class="gloss-term">Quiz de Diagnóstico</div>
+          <div class="gloss-def">Algoritmo de filtrado basado en variables de entorno del usuario (luz disponible, presencia de mascotas) para sugerir plantas específicas. Incluye <em>Sansevieria</em> como fallback universal.</div>
+        </div>
+
+        <div class="gloss-item">
+          <div class="gloss-term">Asistente Botánico / Scanner IA</div>
+          <div class="gloss-def">Módulo integrado con <strong>Google Generative AI (Gemini)</strong> que resuelve dudas de cuidado en lenguaje natural, delimitado por un System Prompt estricto al dominio botánico y del e-commerce.</div>
+        </div>
+
+        <div class="gloss-item">
+          <div class="gloss-term">JWT — JSON Web Token</div>
+          <div class="gloss-def">Estándar de autenticación stateless firmado criptográficamente. Permite que el servidor valide la identidad del usuario sin necesidad de mantener sesiones activas en memoria.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. Historias de Usuario -->
+    <section class="section" id="historias">
+      <h3 class="section-title"><span class="section-num">1.3</span> Historias de Usuario — Product Backlog Inicial</h3>
+
+      <div class="story-card fade-in">
+        <span class="story-role">👤 Cliente Nuevo</span>
+        <div class="story-text">Como <em>cliente nuevo</em>, quiero registrarme mediante validación de dos factores (Email OTP y SMS) para garantizar la seguridad y autenticidad de mi cuenta.</div>
+        <div class="dod-label">✔ Definition of Done</div>
+        <ul class="dod-items">
+          <li>Datos guardados en tabla <code>PendingRegistration</code> durante el proceso de verificación.</li>
+          <li>Email y SMS enviados correctamente mediante integración con <strong>Brevo</strong> (SMTP) y <strong>Twilio</strong> (SMS).</li>
+          <li>Al verificar el OTP, el usuario migra a la tabla <code>User</code> y se genera un JWT firmado con expiración definida.</li>
+        </ul>
+      </div>
+
+      <div class="story-card fade-in">
+        <span class="story-role">🌿 Comprador Inexperto</span>
+        <div class="story-text">Como <em>comprador inexperto</em>, quiero realizar un test de diagnóstico para que el sistema me recomiende la planta ideal para mi hogar y estilo de vida.</div>
+        <div class="dod-label">✔ Definition of Done</div>
+        <ul class="dod-items">
+          <li>Formulario de variables ambientales (nivel de luz, presencia de mascotas) correctamente procesado en backend.</li>
+          <li>El sistema consulta la base de datos y retorna el <strong>Top 3 de plantas compatibles</strong> según los parámetros ingresados.</li>
+          <li>Mecanismo de fallback implementado (Sansevieria) cuando la consulta retorna 0 resultados compatibles.</li>
+        </ul>
+      </div>
+
+      <div class="story-card fade-in">
+        <span class="story-role">🤖 Miembro de la Comunidad</span>
+        <div class="story-text">Como <em>miembro de la comunidad</em>, quiero consultar a un asistente de Inteligencia Artificial para recibir consejos personalizados sobre el riego y cuidado de mis plantas.</div>
+        <div class="dod-label">✔ Definition of Done</div>
+        <ul class="dod-items">
+          <li>Endpoint <code>/api/chat</code> conectado y funcional con la API de <strong>Gemini 2.5 Flash</strong> de Google.</li>
+          <li>System Prompt inyectado correctamente para delimitar las respuestas al dominio botánico y de la tienda.</li>
+          <li>Respuestas en lenguaje natural con latencia aceptable dentro de los límites del plan gratuito de la API.</li>
+        </ul>
+      </div>
+
+      <div class="story-card fade-in">
+        <span class="story-role">🛡️ Administrador</span>
+        <div class="story-text">Como <em>administrador</em>, quiero acceder a un panel de control protegido para visualizar estadísticas, gestionar el catálogo de plantas, aprobar pedidos y moderar usuarios de la comunidad.</div>
+        <div class="dod-label">✔ Definition of Done</div>
+        <ul class="dod-items">
+          <li>Middleware <code>isAdmin</code> operativo, bloqueando acceso a rutas protegidas para usuarios no autorizados.</li>
+          <li>Componentes React renderizando métricas dinámicas en tiempo real (ingresos, usuarios activos).</li>
+          <li>CRUD completo para catálogo de plantas, pedidos y gestión de usuarios mediante peticiones autenticadas vía <code>adminAPI</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Objetivos y Restricciones -->
+    <section class="section" id="objetivos">
+      <h3 class="section-title"><span class="section-num">1.4</span> Objetivos y Restricciones</h3>
+
+      <div class="highlight fade-in">
+        <p>🏁 <strong>Hito Principal (MVP):</strong> Lanzamiento del e-commerce funcional con pasarela de compra completa, integración de IA (Asistente Botánico / Chatbot) y flujo de registro seguro con doble validación OTP.</p>
+      </div>
+
+      <div class="restrictions fade-in">
+        <div class="restriction">
+          <span class="restriction-icon">⚙️</span>
+          <div class="restriction-text"><strong>Restricción de Backend Stateless:</strong> El servidor debe funcionar de forma stateless para permitir su despliegue y replicación horizontal en entornos PaaS modernos como Railway, sin pérdida de sesiones entre instancias.</div>
+        </div>
+        <div class="restriction">
+          <span class="restriction-icon">🔌</span>
+          <div class="restriction-text"><strong>Límites de Capa Gratuita:</strong> Las integraciones de terceros operan bajo restricciones de cuota: <strong>Brevo</strong> para SMTP, <strong>Twilio</strong> para SMS y <strong>Google Gemini</strong> para IA. El diseño debe contemplar manejo de errores por límite de llamadas.</div>
+        </div>
+        <div class="restriction">
+          <span class="restriction-icon">🔐</span>
+          <div class="restriction-text"><strong>Seguridad Obligatoria:</strong> Encriptación de contraseñas con <strong>Bcrypt</strong> (salt rounds: 10) y autenticación mediante <strong>JWT</strong> con tiempo de expiración definido. Protección contra inyección SQL garantizada por el ORM <strong>Prisma</strong>.</div>
+        </div>
+        <div class="restriction">
+          <span class="restriction-icon">📝</span>
+          <div class="restriction-text"><strong>Validación de Inputs:</strong> Filtrado estricto de todas las entradas del usuario en el backend mediante <strong>express-validator</strong>, previniendo inyección de datos maliciosos en todos los endpoints expuestos.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="part-divider"></div>
+
+    <!-- ════════════════════ PARTE II — SAD ════════════════════ -->
+    <div class="part-header" id="sad">
+      <span class="part-number">Parte II</span>
+      <h2>Documento de Arquitectura de Software (SAD)</h2>
+    </div>
+
+    <!-- SAD 1. Introducción -->
+    <section class="section" id="introduccion">
+      <h3 class="section-title"><span class="section-num">2.1</span> Introducción y Objetivos</h3>
+      <div class="info-card fade-in" style="border-left-color: var(--gold);">
+        <div class="card-label" style="color: var(--gold);">🎯 Objetivo Técnico Principal</div>
+        <p>Crear una plataforma <strong>API-first, reactiva y escalable</strong> para la comercialización de plantas, que integre un ecosistema social activo y asistencia botánica automatizada basada en Inteligencia Artificial, garantizando una experiencia de usuario continua y de alta calidad tanto en el proceso de compra como en la post-venta.</p>
+      </div>
+      <div class="prose fade-in">
+        <p>La arquitectura seleccionada prioriza la <strong>escalabilidad horizontal</strong>, la <strong>separación de responsabilidades</strong> mediante el patrón MVC y la <strong>resiliencia</strong> ante los límites de las APIs de terceros. El sistema está diseñado para ser desplegado en entornos PaaS sin configuración de infraestructura compleja, facilitando el mantenimiento y los ciclos de entrega continua (CI/CD).</p>
+      </div>
+    </section>
+
+    <!-- SAD 2. NFR -->
+    <section class="section" id="nfr">
+      <h3 class="section-title"><span class="section-num">2.2</span> Requerimientos No Funcionales — Atributos de Calidad</h3>
+      <div class="nfr-grid fade-in">
+
+        <div class="nfr-card">
+          <div class="nfr-icon">📈</div>
+          <div class="nfr-title">Escalabilidad</div>
+          <ul class="nfr-items">
+            <li>Arquitectura <strong>Stateless</strong> basada en tokens JWT.</li>
+            <li>El servidor Node.js/Express puede replicarse horizontalmente sin perder sesiones entre instancias.</li>
+            <li>Diseño modular que permite extraer módulos como microservicios en el futuro.</li>
+          </ul>
+        </div>
+
+        <div class="nfr-card">
+          <div class="nfr-icon">🔐</div>
+          <div class="nfr-title">Seguridad</div>
+          <ul class="nfr-items">
+            <li><strong>Autenticación:</strong> JWT firmados con secreto de servidor.</li>
+            <li><strong>Cifrado en reposo:</strong> Contraseñas hasheadas con Bcrypt (salt: 10).</li>
+            <li><strong>Validación:</strong> express-validator en todos los endpoints de entrada.</li>
+            <li><strong>Anti-injection:</strong> ORM Prisma bloquea SQL injection automáticamente.</li>
+          </ul>
+        </div>
+
+        <div class="nfr-card">
+          <div class="nfr-icon">🛠️</div>
+          <div class="nfr-title">Mantenibilidad</div>
+          <ul class="nfr-items">
+            <li>Backend desacoplado con patrón <strong>MVC</strong>: Routes → Controllers → Services.</li>
+            <li>Frontend basado en <strong>Componentes Funcionales</strong> modulares con React.</li>
+            <li><strong>GlobalContext</strong> para manejo centralizado del estado de la aplicación.</li>
+          </ul>
+        </div>
+
+        <div class="nfr-card">
+          <div class="nfr-icon">⚡</div>
+          <div class="nfr-title">Rendimiento</div>
+          <ul class="nfr-items">
+            <li>Node.js con modelo <strong>asíncrono I/O no bloqueante</strong> para peticiones concurrentes.</li>
+            <li>Gemini 2.5 Flash seleccionado por su <strong>baja latencia</strong> en generación de texto.</li>
+            <li>Vite en frontend para <strong>builds optimizados</strong> y Hot Module Replacement.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SAD 3. Vista Lógica -->
+    <section class="section" id="arquitectura">
+      <h3 class="section-title"><span class="section-num">2.3</span> Vista Lógica — Arquitectura de Alto Nivel</h3>
+      <div class="prose fade-in">
+        <p>El sistema implementa un <strong>Patrón Arquitectónico Cliente-Servidor</strong>, con un Monolito Modular en el backend y una Single Page Application (SPA) en el frontend. Las cuatro capas se comunican de forma desacoplada, permitiendo que cada capa sea modificada o escalada de forma independiente.</p>
+      </div>
+
+      <div class="arch-diagram fade-in">
+        <div class="arch-layer">
+          <span class="arch-layer-icon">🖥️</span>
+          <div class="arch-layer-body">
+            <div class="arch-layer-name">Capa de Presentación — Frontend</div>
+            <div class="arch-layer-desc">SPA en React (Vite) con react-router-dom para enrutamiento interno y GlobalContext para estado global. Se comunica exclusivamente mediante <code style="color:var(--gold-light);background:rgba(0,0,0,.3);padding:1px 5px;border-radius:3px;">api.js</code> de forma asíncrona (fetch/axios).</div>
+          </div>
+        </div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-layer">
+          <span class="arch-layer-icon">⚙️</span>
+          <div class="arch-layer-body">
+            <div class="arch-layer-name">Capa de Lógica de Negocio — Backend</div>
+            <div class="arch-layer-desc">Servidor Express.js que expone una API RESTful estructurada en módulos independientes: <strong style="color:var(--green-light)">Auth · Plants · Orders · Users · Chat · Admin</strong>. Implementa el patrón MVC con middleware de autenticación y autorización.</div>
+          </div>
+        </div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-layer">
+          <span class="arch-layer-icon">🔌</span>
+          <div class="arch-layer-body">
+            <div class="arch-layer-name">Capa de Integraciones — Servicios Externos</div>
+            <div class="arch-layer-desc">El backend actúa como orquestador conectando a APIs de terceros: <strong style="color:var(--green-light)">Brevo</strong> (Email/SMTP) · <strong style="color:var(--green-light)">Twilio</strong> (SMS/OTP) · <strong style="color:var(--green-light)">Google Generative AI</strong> (Gemini LLM).</div>
+          </div>
+        </div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-layer">
+          <span class="arch-layer-icon">🗄️</span>
+          <div class="arch-layer-body">
+            <div class="arch-layer-name">Capa de Persistencia — Base de Datos</div>
+            <div class="arch-layer-desc">PostgreSQL gestionado mediante <strong style="color:var(--green-light)">Prisma ORM</strong>, garantizando integridad referencial con eliminaciones en cascada (<code style="color:var(--gold-light);background:rgba(0,0,0,.3);padding:1px 5px;border-radius:3px;">onDelete: Cascade</code>) y validación de tipos en tiempo de desarrollo.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prose fade-in">
+        <p><strong>Flujo de datos típico:</strong> El usuario interactúa con la SPA → la capa de servicios (api.js) envía una petición HTTP al endpoint del backend → el controlador del módulo correspondiente procesa la lógica, consulta la base de datos vía Prisma o llama a un servicio externo → devuelve la respuesta JSON al frontend → React actualiza el estado y re-renderiza la vista.</p>
+      </div>
+    </section>
+
+    <!-- SAD 4. Stack -->
+    <section class="section" id="stack">
+      <h3 class="section-title"><span class="section-num">2.4</span> Stack Tecnológico Autorizado</h3>
+      <table class="tech-table fade-in">
+        <thead>
+          <tr>
+            <th>Capa / Componente</th>
+            <th>Tecnología Propuesta</th>
+            <th>Versión</th>
+            <th>Notas y Razón de Elección</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frontend</td>
+            <td>React + Vite</td>
+            <td><span class="version-badge">18.x / 5.x</span></td>
+            <td>Generación rápida de SPA. Alta reactividad en interfaces complejas con re-renders eficientes.</td>
+          </tr>
+          <tr>
+            <td>Estilos / UI</td>
+            <td>Tailwind CSS + Framer Motion</td>
+            <td><span class="version-badge">3.4 / 11.x</span></td>
+            <td>Estilos modulares sin archivos externos masivos. Animaciones fluidas para mayor retención visual.</td>
+          </tr>
+          <tr>
+            <td>Backend</td>
+            <td>Node.js con Express</td>
+            <td><span class="version-badge">20.x LTS</span></td>
+            <td>Modelo asíncrono I/O no bloqueante, ideal para manejar múltiples peticiones concurrentes a APIs externas.</td>
+          </tr>
+          <tr>
+            <td>Base de Datos</td>
+            <td>PostgreSQL (vía Prisma ORM)</td>
+            <td><span class="version-badge">16.x / 5.11</span></td>
+            <td>Modelo relacional altamente estructurado. Prisma provee validación de tipos y mitigación automática de SQL Injection.</td>
+          </tr>
+          <tr>
+            <td>Autenticación</td>
+            <td>JWT + Bcrypt</td>
+            <td><span class="version-badge">Latest</span></td>
+            <td>JWT para sesiones stateless escalables. Bcrypt con 10 salt rounds para hash seguro de contraseñas.</td>
+          </tr>
+          <tr>
+            <td>Integración IA</td>
+            <td>Google Generative AI SDK</td>
+            <td><span class="version-badge">0.24</span></td>
+            <td>Modelo <code>gemini-2.5-flash</code> para baja latencia en respuestas del asistente virtual y procesamiento de lenguaje natural.</td>
+          </tr>
+          <tr>
+            <td>Email (SMTP)</td>
+            <td>Brevo API</td>
+            <td><span class="version-badge">Free Tier</span></td>
+            <td>Envío de correos OTP y transaccionales. Plan gratuito con límite de envíos diarios suficiente para el MVP.</td>
+          </tr>
+          <tr>
+            <td>SMS</td>
+            <td>Twilio API</td>
+            <td><span class="version-badge">Free Tier</span></td>
+            <td>Envío de códigos OTP por SMS. Integración directa con SDK oficial de Node.js.</td>
+          </tr>
+          <tr>
+            <td>Validación</td>
+            <td>express-validator</td>
+            <td><span class="version-badge">Latest</span></td>
+            <td>Filtrado y sanitización estricta de inputs en todos los endpoints del backend.</td>
+          </tr>
+          <tr>
+            <td>Infraestructura</td>
+            <td>Railway PaaS</td>
+            <td><span class="version-badge">N/A</span></td>
+            <td>Despliegue automatizado continuo con CI/CD nativo y gestión simplificada de variables de entorno en producción.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="part-divider"></div>
+
+    <!-- ════════════════════ PARTE III — METODOLOGÍA ════════════════════ -->
+    <div class="part-header" id="metodologia-header">
+      <span class="part-number">Parte III</span>
+      <h2>Justificación de la Metodología</h2>
+    </div>
+
+    <section class="section" id="metodologia">
+      <h3 class="section-title"><span class="section-num">3.1</span> Metodología Seleccionada: Scrum (Enfoque Ágil)</h3>
+
+      <div class="highlight fade-in">
+        <p>Para este proyecto se ha seleccionado la metodología <strong>Scrum</strong> (Enfoque Ágil) debido a que la naturaleza de sus requisitos es <strong>evolutiva e innovadora</strong>, especialmente por la integración constante de componentes de Inteligencia Artificial (Prompt Engineering, Diagnóstico algorítmico) y flujos de experiencia de usuario complejos (E-commerce + Social Feed).</p>
+      </div>
+
+      <div class="scrum-grid fade-in">
+        <div class="scrum-card">
+          <div class="s-icon">🔄</div>
+          <div class="s-title">Flexibilidad Adaptativa</div>
+          <div class="s-desc">Sprints iterativos permiten ajustar los módulos de IA y UX según el feedback real de los usuarios en cada ciclo de entrega.</div>
+        </div>
+        <div class="scrum-card">
+          <div class="s-icon">🧪</div>
+          <div class="s-title">Pruebas Continuas</div>
+          <div class="s-desc">Validación en cada Sprint: flujos OTP, panel Admin, Quiz de Diagnóstico y respuestas del Asistente Botánico son probados de forma incremental.</div>
+        </div>
+        <div class="scrum-card">
+          <div class="s-icon">📊</div>
+          <div class="s-title">Gestión Visual</div>
+          <div class="s-desc">Product Backlog gestionado en <strong>Trello / GitHub Projects</strong> para transparencia en asignación de roles y seguimiento del progreso del equipo Full-Stack.</div>
+        </div>
+        <div class="scrum-card">
+          <div class="s-icon">⚠️</div>
+          <div class="s-title">Mitigación de Riesgo</div>
+          <div class="s-desc">Nivel de incertidumbre <strong>medio-alto</strong> en el desarrollo algorítmico de IA. Scrum permite pivotar rápido ante resultados inesperados en el Quiz o el Chatbot.</div>
+        </div>
+        <div class="scrum-card">
+          <div class="s-icon">🚀</div>
+          <div class="s-title">Entregas Iterativas</div>
+          <div class="s-desc">Cada Sprint entrega un incremento funcional del MVP, priorizando el E-commerce core sobre funcionalidades sociales secundarias.</div>
+        </div>
+        <div class="scrum-card">
+          <div class="s-icon">🤝</div>
+          <div class="s-title">Alineación de Equipo</div>
+          <div class="s-desc">Daily stand-ups, Sprint Reviews y Retrospectivas garantizan comunicación fluida y detección temprana de bloqueos técnicos.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="part-divider"></div>
+
+    <!-- ════════════════════ PARTE IV — ENTREGA ════════════════════ -->
+    <div class="part-header" id="entrega-header">
+      <span class="part-number">Parte IV</span>
+      <h2>Formato de Entrega — GitHub Pages</h2>
+    </div>
+
+    <section class="section" id="entrega">
+      <h3 class="section-title"><span class="section-num">4.1</span> Instrucciones de Despliegue de Documentación</h3>
+      <div class="prose fade-in">
+        <p>Para cumplir con el requisito de documentación moderna, colaborativa y accesible públicamente, la entrega del PID y el SAD se realizará a través de <strong>GitHub Pages</strong>. A continuación se detalla la estructura recomendada:</p>
+      </div>
+
+      <div class="delivery-steps fade-in">
+        <div class="delivery-step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-title">Un solo repositorio por equipo</div>
+            <div class="step-desc">Todo el equipo trabajará sobre el mismo repositorio Git. Este archivo <code>index.html</code> se coloca en la raíz o dentro de una carpeta <code>docs/</code> del repositorio principal del proyecto.</div>
+          </div>
+        </div>
+        <div class="delivery-step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-title">Formato web activo</div>
+            <div class="step-desc">Los documentos PID y SAD están maquetados en este archivo HTML/CSS. Alternativamente, pueden usarse generadores como <code>Jekyll</code>, <code>Hugo</code> o <code>Docsify</code> para renderizar archivos <code>.md</code> con menú lateral navegable.</div>
+          </div>
+        </div>
+        <div class="delivery-step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-title">Activar GitHub Pages</div>
+            <div class="step-desc">En la configuración del repositorio: <strong>Settings → Pages → Source → Deploy from a branch → Main → /docs</strong>. Tras unos minutos, la documentación estará disponible en <code>https://[usuario].github.io/[repositorio]</code>.</div>
+          </div>
+        </div>
+        <div class="delivery-step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">Estructura de carpetas recomendada</div>
+            <div class="step-desc">
+              <code>docs/</code> → Contiene <code>index.html</code> (este documento).<br>
+              <code>src/</code> → Código fuente del proyecto (frontend + backend).<br>
+              <code>README.md</code> → Enlace directo a la GitHub Pages URL para acceso rápido.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</main>
+
+<script>
+  // Active sidebar link on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Animate fade-in on scroll
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animation = 'fadeUp .5s ease forwards';
+        fadeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => { el.style.opacity = '0'; fadeObs.observe(el); });
+</script>
+</body>
+</html>
